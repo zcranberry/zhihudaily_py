@@ -1,4 +1,5 @@
 #encoding:UTF-8
+import os.path
 import urllib2
 import json
 import tornado.ioloop
@@ -11,20 +12,24 @@ req = urllib2.Request(url,headers = headers)
 content = urllib2.urlopen(req).read()
 json_cont = content.decode('u8')
 loaded = json.loads(json_cont)
-print loaded['date']
+#print loaded['date']
 #for each in loaded['news']:
 #    print 'title:', each['title']
 #    print 'url:', each['url']
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        for each in loaded['news']:
-        	self.write('<p> <a href = {0} >{1}</a></p>\n'.format(each['share_url'], each['title'].encode('utf-8')))
+        self.render('index.html', articles = loaded['news'])
+        #for each in loaded['news']:
+        #   self.write('<p> <a href = {0} >{1}</a></p>\n'.format(each['share_url'], each['title'].encode('utf-8')))
 
 
-application = tornado.web.Application([
-    (r"/", MainHandler),
-])
+
+application = tornado.web.Application(
+    handlers = [(r"/", MainHandler)],
+    template_path = os.path.join(os.path.dirname(__file__),"templates"),
+    debug = True
+)
 
 
 if __name__ == "__main__":

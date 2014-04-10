@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>myzhihudaily</title>
+    </head>
+    <body>
+        {% for article in articles %}
+        <p> <a href = {{article['share_url']}} > {{article['title'].encode('utf-8')}}</a></p>
+        {% end %}
+    </body>
+</html>
